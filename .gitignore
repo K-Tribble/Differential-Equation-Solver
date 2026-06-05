@@ -22,3 +22,5 @@ heat_lab.txt
 *.csv
 
 ThermalLab
+
+.DS_Store

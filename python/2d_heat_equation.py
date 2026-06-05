@@ -12,7 +12,7 @@ Initial Profile : Gaussian Initial Profile
 alpha = 1
 
 # Define the rectangle grid
-N = 80
+N = 100
 dx, dy = 1 / N, 1 / N
 x = np.linspace(-1/2, 1/2, N)
 y = np.linspace(-1/2, 1/2, N)
@@ -50,7 +50,7 @@ solver = deq.Solver(rk3_stepper)
 # Stability limit is given y dt <= dx^2/(4 * alpha), this is under the limit
 dt = 1.5e-5
 
-t_end = 0.5
+t_end = 5
 dt = 1.5e-5
 nsteps = int(t_end / dt)
 
@@ -68,7 +68,7 @@ u_plot[1:-1, 1:-1] = u_final
 # Neumann: copy boundary from nearest interior
 u_plot[0, :] = u_plot[1, :]
 u_plot[-1, :] = u_plot[-2, :]
-u_plot[:, 0] = u_plot[:, 1]
+u_plot[:, 0] = u_plot[:, 1] 
 u_plot[:, -1] = u_plot[:, -2]
 
 plt.figure(figsize=(6,5))

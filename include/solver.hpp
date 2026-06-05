@@ -22,14 +22,14 @@ struct IntegrationResult {
     double h_used = 0.0;                // Step size used
     double total_time = 0.0;            // Execution time (seconds)
     double final_error = 0.0;            // Error at final time
-    HistoryLevel history_level;         // How much of the history was stores
+    HistoryLevel history_level;         // How much of the history was stored
 };
 
 struct ConvergenceTestResult {
     double t_end = 0.0;
     std::vector<double> h_vals;             // Step sizes
-    std::vector<double> final_error;        // Error for each h
-    std::vector<double> final_error_ratios; // Ratio of successive errors
+    std::vector<double> final_error;         // Error for each h
+    std::vector<double> final_error_ratios;  // Ratio of successive errors
     std::vector<double> p_estimations;      // Estimated order
     std::string error_name;                 // Metric name
     int min_pow = 0;

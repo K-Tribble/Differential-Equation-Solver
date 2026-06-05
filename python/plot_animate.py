@@ -18,7 +18,7 @@ h = 0.01
 
 # Solve numerically
 prob = diffeqpy.IVPProblem(f, y0, t0)
-stepper = diffeqpy.EulerStepper()
+stepper = diffeqpy.RK5Stepper()
 solver = diffeqpy.Solver(stepper)
 result = solver.integrateFixedSteps(prob, t_end, h, exact)
 
