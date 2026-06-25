@@ -1,4 +1,4 @@
-import diffeqpy
+import deq
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
@@ -17,9 +17,9 @@ t_end = 10.0
 h = 0.01
 
 # Solve numerically
-prob = diffeqpy.IVPProblem(f, y0, t0)
-stepper = diffeqpy.RK5Stepper()
-solver = diffeqpy.Solver(stepper)
+prob = deq.IVPProblem(f, y0, t0)
+stepper = deq.RK5Stepper()
+solver = deq.Solver(stepper)
 result = solver.integrateFixedSteps(prob, t_end, h, exact)
 
 t_vals = np.array(result.T)

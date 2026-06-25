@@ -1,9 +1,9 @@
-import diffeqpy
+import deq
 import numpy as np
 import matplotlib.pyplot as plt
 
 def run_solver(stepper, prob, t_end, h, exact, error_metric, min_pow, max_pow):
-    solver = diffeqpy.Solver(stepper)
+    solver = deq.Solver(stepper)
     result = solver.integrateFixedSteps(prob, t_end, h, exact, error_metric)
     convergence = solver.convergenceTest(prob, t_end, exact, min_pow, max_pow, error_metric)
     solver.printConvergenceTest(convergence)
@@ -45,7 +45,7 @@ class StepperComparison:
         def __init__(self, f, exact, y0, t0, t_end, h, error_metric, min_pow = 1, max_pow = 7):
             self.f = f
             self.exact = exact
-            self.prob = diffeqpy.IVPProblem(f, y0, t0)
+            self.prob = deq.IVPProblem(f, y0, t0)
             self.t_end = t_end
             self.h = h
             self.error_metric = error_metric

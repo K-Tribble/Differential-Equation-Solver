@@ -1,9 +1,9 @@
-import diffeqpy as deq
+import deq
 import numpy as np
 import matplotlib.pyplot as plt
 
 """
-Code for plotting temperature diffusion 
+Code for plotting temperature diffusion L
 on a 2D rectangular plate over time.
 Boundary conditions : No heat flow at the edges
 Initial Profile : Gaussian Initial Profile
@@ -20,7 +20,7 @@ y = np.linspace(-1/2, 1/2, N)
 X, Y = np.meshgrid(x, y)
 
 # Gaussian Initial Profile 
-sigma = 0.1
+sigma = 0.25
 u0_full = np.exp(-(X**2 + Y**2) / sigma**2)
 
 print("Initial Mean (full grid) =", np.mean(u0_full))
@@ -31,16 +31,18 @@ u0_int = u0_full[1:-1, 1:-1]
 # Flatten for solver
 y0 = u0_int.flatten()
 
-bc_type = deq.BCType.Neumann
-
 dt = 0.00002603082
 
-def bc(x):
+def bc_func(x):
     return 0
 
 t0 = 0
 
-rhs = deq.make_heat_rhs_2d(alpha, N, N, dx, dy, bc_type, bc_type, bc_type, bc_type, bc, bc, bc, bc)
+bc_sides = deq.BCSide(deq.BCType.Neumann, bc_func)
+
+bc = deq.BoundaryConditions2D(bc_sides, bc_sides, bc_sides, bc_sides)
+
+rhs = deq.make_heat_rhs(alpha, N, N, dx, dy, bc)
 
 prob = deq.IVPProblem(rhs, y0, 0)
 
@@ -60,6 +62,7 @@ result = solver.integrateFixedSteps(prob, t_end, dt, deq.history_level.final_onl
 u_final = np.array(result.Y)[-1]
 u_final = u_final.reshape((N-2, N-2))
 print(f"Final mean = {np.mean(u_final)}")
+print(f"Time take = {result.total_time}")
 
 # Reconstruct full grid (with Neumann BC)
 u_plot = np.zeros((N, N))

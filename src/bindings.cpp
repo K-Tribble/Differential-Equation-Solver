@@ -33,7 +33,7 @@ class PyStepper : public Stepper {
     }
 };
 
-PYBIND11_MODULE(diffeqpy, m) {
+PYBIND11_MODULE(deq, m) {
     m.doc() = "Python bindings for diffeq solver library";
 
     // Vec bindings
@@ -183,79 +183,123 @@ PYBIND11_MODULE(diffeqpy, m) {
         .value("Dirichlet", pde::BCType::Dirichlet)
         .value("Neumann", pde::BCType::Neumann);
 
-    m.def("make_heat_rhs_1d", &pde::make_heat_rhs_1d,
-          py::arg("alpha"),
-          py::arg("n_interior"),
-          py::arg("dx"),
-          py::arg("left_bc") = pde::BCType::Dirichlet,
-          py::arg("right_bc") = pde::BCType::Dirichlet,
-          py::arg("left_val") = pde::BCFunc(),
-          py::arg("right_val") = pde::BCFunc(),
-          R"pbdoc(
+    py::class_<pde::BCSide>(m, "BCSide")
+        .def(py::init<>())
+        .def(py::init<pde::BCType, pde::BCFunc>())
+        .def_readwrite("type", &pde::BCSide::type)
+        .def_readwrite("value", &pde::BCSide::value);
+
+    py::class_<pde::BoundaryConditions1D>(m, "BoundaryConditions1D")
+        .def(py::init<>())
+        .def(py::init<pde::BCSide, pde::BCSide>())
+        .def_readwrite("left", &pde::BoundaryConditions1D::left)
+        .def_readwrite("right", &pde::BoundaryConditions1D::right);
+
+    py::class_<pde::BoundaryConditions2D>(m, "BoundaryConditions2D")
+        .def(py::init<>())
+        .def(py::init<pde::BCSide, pde::BCSide, pde::BCSide, pde::BCSide>())
+        .def_readwrite("left", &pde::BoundaryConditions2D::left)
+        .def_readwrite("right", &pde::BoundaryConditions2D::right)
+        .def_readwrite("top", &pde::BoundaryConditions2D::top)
+        .def_readwrite("bottom", &pde::BoundaryConditions2D::bottom);
+
+    py::class_<pde::BoundaryConditions3D>(m, "BoundaryConditions3D")
+        .def(py::init<>())
+        .def(py::init<pde::BCSide, pde::BCSide, pde::BCSide, pde::BCSide, pde::BCSide, pde::BCSide>())
+        .def_readwrite("left", &pde::BoundaryConditions3D::left)
+        .def_readwrite("right", &pde::BoundaryConditions3D::right)
+        .def_readwrite("top", &pde::BoundaryConditions3D::top)
+        .def_readwrite("bottom", &pde::BoundaryConditions3D::bottom)
+        .def_readwrite("front", &pde::BoundaryConditions3D::front)
+        .def_readwrite("back", &pde::BoundaryConditions3D::back);
+
+    m.def(
+        "make_heat_rhs",
+        py::overload_cast<
+            double,
+            std::size_t,
+            double,
+            pde::BoundaryConditions1D
+        >(&pde::make_heat_rhs),
+        py::arg("alpha"),
+        py::arg("n_interior"),
+        py::arg("dx"),
+        py::arg("bc") = pde::BoundaryConditions1D{},
+        R"pbdoc(
             Create the RHS for the 1D heat equation using the method of lines.
 
             Parameters:
                 alpha: Thermal diffusivity.
                 n_interior: Number of interior grid points.
                 dx: Grid spacing.
-                left_bc: Boundary condition type for the left boundary (Dirichlet or Neumann).
-                right_bc: Boundary condition type for the right boundary (Dirichlet or Neumann).
-                left_val: Function for the left boundary value (Dirichlet) or flux (Neumann).
-                right_val: Function for the right boundary value (Dirichlet) or flux (Neumann).
+                bc: A BoundaryConditions1D object containing the information for each boundary.
 
             Returns:
                 A callable RHS function for the heat equation.
-          )pbdoc");
-
-    m.def("make_heat_rhs_2d", &pde::make_heat_rhs_2d,
-            py::arg("alpha"),
-            py::arg("nx"), py::arg("ny"),
-            py::arg("dx"), py::arg("dy"),
-            py::arg("left_bc") = pde::BCType::Dirichlet,
-            py::arg("right_bc") = pde::BCType::Dirichlet,
-            py::arg("top_bc") = pde::BCType::Dirichlet,
-            py::arg("bottom_bc") = pde::BCType::Dirichlet,
-            py::arg("left_val") = pde::BCFunc(),
-            py::arg("right_val") = pde::BCFunc(),
-            py::arg("top_val") = pde::BCFunc(),
-            py::arg("bottom_val") = pde::BCFunc(),
-            R"pbdoc(
-                Create the RHS for the 2D heat equation using the method of lines.
-    
-                Parameters:
-                    alpha: Thermal diffusivity.
-                    nx, ny: Number of grid points in the x and y directions (including boundaries).
-                    dx, dy: Grid spacing in the x and y directions.
-                    left_bc, right_bc, top_bc, bottom_bc: Boundary condition types for each boundary (Dirichlet or Neumann).
-                    left_val, right_val, top_val, bottom_val: Functions for boundary values (Dirichlet) or fluxes (Neumann).
-    
-                Returns:
-                    A callable RHS function for the 2D heat equation.
-            )pbdoc"
+        )pbdoc"
     );
 
-    m.def("make_heat_rhs_3d", &pde::make_heat_rhs_3d,
-            py::arg("alpha"),
-            py::arg("nx"), py::arg("ny"), py::arg("nz"),
-            py::arg("dx"), py::arg("dy"), py::arg("dz"),
-            py::arg("left_bc"), py::arg("right_bc"),
-            py::arg("top_bc"), py::arg("bottom_bc"),
-            py::arg("front_bc"), py::arg("back_bc"),
-            py::arg("left_val"), py::arg("right_val"),
-            py::arg("top_val"), py::arg("bottom_val"),
-            py::arg("front_val"), py::arg("back_val"),
-            R"pbdoc(
-                Create the RHS for the 3D heat equation using the method of lines.
-    
-                Parameters:
-                    alpha: Thermal diffusivity.
-                    nx, ny, nz: Number of grid points in the x, y, and z directions (including boundaries).
-                    dx, dy, dz: Grid spacing in the x, y and z directions.
-                    left_bc, right_bc, top_bc, bottom_bc, front_bc, back_bc: Boundary condition types for each boundary (Dirichlet or Neumann).
-                    left_val, right_val, top_val, bottom_val, front_val, back_val: Functions for boundary values (Dirichlet) or fluxes (Neumann).
-    
-                Returns:
-                    A callable RHS function for the 3D heat equation.
-            )pbdoc"
-        );
+    m.def(
+        "make_heat_rhs",
+        py::overload_cast<
+            double,
+            std::size_t,
+            std::size_t,
+            double,
+            double,
+            pde::BoundaryConditions2D
+        >(&pde::make_heat_rhs),
+        py::arg("alpha"),
+        py::arg("nx"),
+        py::arg("ny"),
+        py::arg("dx"),
+        py::arg("dy"),
+        py::arg("bc") = pde::BoundaryConditions2D{},
+        R"pbdoc(
+            Create the RHS for the 2D heat equation using the method of lines.
+
+            Parameters:
+                alpha: Thermal diffusivity.
+                nx, ny: Number of grid points in the x and y directions.
+                dx, dy: Grid spacing.
+                bc: A BoundaryConditions2D object containing the information for each boundary.
+
+            Returns:
+                A callable RHS function for the 2D heat equation.
+        )pbdoc"
+    );
+
+    m.def(
+        "make_heat_rhs",
+        py::overload_cast<
+            double,
+            std::size_t,
+            std::size_t,
+            std::size_t,
+            double,
+            double,
+            double,
+            pde::BoundaryConditions3D
+        >(&pde::make_heat_rhs),
+        py::arg("alpha"),
+        py::arg("nx"),
+        py::arg("ny"),
+        py::arg("nz"),
+        py::arg("dx"),
+        py::arg("dy"),
+        py::arg("dz"),
+        py::arg("bc") = pde::BoundaryConditions3D{},
+        R"pbdoc(
+            Create the RHS for the 3D heat equation using the method of lines.
+
+            Parameters:
+                alpha: Thermal diffusivity.
+                nx, ny, nz: Number of grid points in the x, y and z directions.
+                dx, dy, dz: Grid spacing.
+                bc: A BoundaryConditions3D object containing the information for each boundary.
+
+            Returns:
+                A callable RHS function for the 3D heat equation.
+        )pbdoc"
+    );
 }

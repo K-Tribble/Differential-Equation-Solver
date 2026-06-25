@@ -1,5 +1,5 @@
 import numpy as np
-import diffeqpy as deq
+import deq
 import matplotlib.pyplot as plt
 
 c, k = 0.2, 1.0

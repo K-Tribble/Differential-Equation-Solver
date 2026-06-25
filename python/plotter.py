@@ -1,6 +1,6 @@
 import numpy as np
-import diffeqpy
-print("Imported diffeqpy")
+import deq
+print("Imported deq")
 from compare_steppers import StepperComparison
 
 
@@ -40,14 +40,14 @@ y0 = np.array([1.0, 0.0])
 t0 = 0.0
 t_end = 20
 h = 0.01
-error_metric = diffeqpy.rms
+error_metric = deq.rms
 
 comp = StepperComparison(f, exact, y0, t0, t_end, h, error_metric)
 
-comp.add_stepper(diffeqpy.EulerStepper())
-# comp.add_stepper(diffeqpy.MidpointStepper())
-# comp.add_stepper(diffeqpy.RK3Stepper())
-# comp.add_stepper(diffeqpy.RK4Stepper())
-comp.add_stepper(diffeqpy.RK5Stepper())
+comp.add_stepper(deq.EulerStepper())
+# comp.add_stepper(deq.MidpointStepper())
+# comp.add_stepper(deq.RK3Stepper())
+# comp.add_stepper(deq.RK4Stepper())
+comp.add_stepper(deq.RK5Stepper())
 
 comp.plot_results()

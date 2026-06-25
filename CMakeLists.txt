@@ -6,8 +6,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
-
 set(PYTHON_VENV_PATH "${CMAKE_SOURCE_DIR}/.venv")
 set(Python3_ROOT_DIR "${PYTHON_VENV_PATH}")
 set(Python3_FIND_VIRTUALENV ONLY)
@@ -20,12 +18,9 @@ message(STATUS "🔹 Python include dir: ${Python3_INCLUDE_DIRS}")
 message(STATUS "🔹 NumPy include dir: ${Python3_NumPy_INCLUDE_DIRS}")
 
 set(PYBIND11_FINDPYTHON ON)
-find_package(pybind11 CONFIG REQUIRED
-    HINTS /opt/homebrew/opt/pybind11/share/cmake/pybind11
-          /usr/local/opt/pybind11/share/cmake/pybind11
-)
+find_package(pybind11 CONFIG REQUIRED)
 
-include_directories(${pybind11_INCLUDE_DIRS})
+include_directories(include)
 
 add_executable(diffeq_demo
     src/main.cpp
@@ -40,11 +35,10 @@ add_executable(1d_heat_example
     src/Steppers/rk4_stepper.cpp
 )
 
+target_include_directories(diffeq_demo PRIVATE include)
 target_include_directories(1d_heat_example PRIVATE include)
 
-target_include_directories(diffeq_demo PRIVATE include)
-
-pybind11_add_module(diffeqpy
+pybind11_add_module(deq
     src/bindings.cpp
     src/solver.cpp
     src/Steppers/euler_stepper.cpp
@@ -55,36 +49,23 @@ pybind11_add_module(diffeqpy
     src/pde/heat_equation.cpp
 )
 
-target_include_directories(diffeqpy PRIVATE
+target_include_directories(deq PRIVATE
     include
     ${Python3_INCLUDE_DIRS}
     ${Python3_NumPy_INCLUDE_DIRS}
 )
 
-target_link_libraries(diffeqpy PRIVATE Python3::Python)
+target_link_libraries(deq PRIVATE Python3::Python)
 
 execute_process(
     COMMAND "${Python3_EXECUTABLE}" -c
-        "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
-    OUTPUT_VARIABLE VENV_SITE_PACKAGES
+        "import sysconfig; print(sysconfig.get_path('platlib'))"
+    OUTPUT_VARIABLE PYTHON_SITEARCH
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
-message(STATUS "🔹 Installing diffeqpy to: ${VENV_SITE_PACKAGES}")
+message(STATUS "🔹 Python site-packages (platlib): ${PYTHON_SITEARCH}")
 
-if(EXISTS "${VENV_SITE_PACKAGES}")
-    add_custom_command(TARGET diffeqpy POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-            "$<TARGET_FILE:diffeqpy>"
-            "${VENV_SITE_PACKAGES}/"
-        COMMENT "📦 Installing diffeqpy into active Python venv site-packages"
-    )
-else()
-    message(WARNING "⚠️ Could not detect site-packages directory at ${VENV_SITE_PACKAGES}. Skipping install step.")
-endif()
-
-add_custom_target(count
-    COMMAND find ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/include -name "*.cpp" -o -name "*.hpp" -o -name "*.h" |
-            xargs wc -l
-    COMMENT "Counting total lines of C++ code in src/ and include/"
+install(TARGETS deq
+    LIBRARY DESTINATION ${PYTHON_SITEARCH}
 )

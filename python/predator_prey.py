@@ -1,5 +1,5 @@
 import numpy as np
-import diffeqpy
+import deq
 import matplotlib.pyplot as plt
 
 # Predator-prey system (no exact solution)
@@ -14,14 +14,14 @@ t0 = 0
 t_end = 20
 h = 0.01
 
-prob = diffeqpy.IVPProblem(f, y0, t0)
+prob = deq.IVPProblem(f, y0, t0)
 
-euler_stepper = diffeqpy.EulerStepper()
-euler_solver = diffeqpy.Solver(euler_stepper)
+euler_stepper = deq.EulerStepper()
+euler_solver = deq.Solver(euler_stepper)
 result_euler = euler_solver.integrateFixedSteps(prob, t_end, h)
 
-rk5_stepper = diffeqpy.RK5Stepper()
-rk5_solver = diffeqpy.Solver(rk5_stepper)
+rk5_stepper = deq.RK5Stepper()
+rk5_solver = deq.Solver(rk5_stepper)
 result_rk5 = rk5_solver.integrateFixedSteps(prob, t_end, h)
 
 fig, axs = plt.subplots(1, 2, figsize=(12, 5))

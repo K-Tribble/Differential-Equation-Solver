@@ -25,8 +25,11 @@ int main() {
     // Choose dt safely small for explicit RK4 (stability ~ O(dx^2)).
     const double dt = 0.25 * dx * dx / alpha;
 
+    BoundaryConditions1D bc;
+
+
     // Build RHS using Dirichlet zero BCs on both ends
-    auto rhs = make_heat_rhs_1d(alpha, n_interior, dx, BCType::Dirichlet, BCType::Dirichlet);
+    auto rhs = make_heat_rhs(alpha, n_interior, dx, bc);
 
     IVPProblem prob;
     prob.f = rhs;
