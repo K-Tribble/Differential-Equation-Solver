@@ -60,10 +60,10 @@ public:
     explicit Solver(Stepper& stepper_) : stepper(stepper_) {}
 
     // Integrate with exact solution (collects errors)
-    IntegrationResult integrateFixedSteps(const IVPProblem& prob, double t_end, double h, const std::function<Vec(double)>& exactSolution, const errorfunc::ErrorMetric& metric = errorfunc::L2, HistoryLevel history = HistoryLevel::FULL) const;
+    IntegrationResult integrateFixedSteps(const IVPProblem& prob, double t_end, double h, const std::function<Vec(double)>& exactSolution, const errorfunc::ErrorMetric& metric = errorfunc::L2, HistoryLevel history = HistoryLevel::FINAL_ONLY) const;
 
     // Integrate without exact solution (no errors)
-    IntegrationResult integrateFixedSteps(const IVPProblem& prob, double t_end, double h, HistoryLevel history = HistoryLevel::FULL) const;
+    IntegrationResult integrateFixedSteps(const IVPProblem& prob, double t_end, double h, HistoryLevel history = HistoryLevel::FINAL_ONLY) const;
 
     // Print results (with or without exact solution)
     void printResults(const IntegrationResult& result) const;

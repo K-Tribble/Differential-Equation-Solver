@@ -15,5 +15,10 @@ class MidpointStepper : public Stepper {
     private:
         const char* name = "Midpoint";
         const int order = 2;
+
+        Vec k1;
+        Vec k2;
+
+        Vec y_mid;
 };
 }

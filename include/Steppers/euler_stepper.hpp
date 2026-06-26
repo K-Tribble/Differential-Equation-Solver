@@ -16,6 +16,8 @@ class EulerStepper : public Stepper{
         // Vec dydt_; // reusable buffer to avoid allocations per step
         const char* name = "Euler";
         const int order = 1;
+
+        Vec dydt;
 };
 
 }

@@ -12,7 +12,7 @@ Initial Profile : Gaussian Initial Profile
 alpha = 1
 
 # Define the rectangle grid
-N = 10
+N = 100
 dx, dy = 1 / N, 1 / N
 x = np.linspace(-1/2, 1/2, N)
 y = np.linspace(-1/2, 1/2, N)
@@ -42,7 +42,7 @@ rhs = deq.make_heat_rhs(alpha, N, N, dx, dy, bc)
 
 prob = deq.IVPProblem(rhs, y0, 0)
 
-stepper = deq.RK3Stepper()
+stepper = deq.RK5Stepper()
 solver = deq.Solver(stepper)
 
 # Stability limit is given y dt <= dx^2/(4 * alpha), this is under the limit

@@ -14,6 +14,15 @@ class RK4Stepper : public Stepper {
     private:
         const char* name = "Runge-Kutta 4";
         const int order = 4;
+
+        Vec k1;
+        Vec k2;
+        Vec k3;
+        Vec k4;
+
+        Vec y2;
+        Vec y3;
+        Vec y4;
 };
 
 }

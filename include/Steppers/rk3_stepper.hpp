@@ -13,6 +13,13 @@ class RK3Stepper : public Stepper {
     private:
         const char* name = "Runge-Kutta 3";
         const int order = 3;
+
+        Vec k1;
+        Vec k2;
+        Vec k3;
+
+        Vec y2;
+        Vec y3;
 };
 
 }
