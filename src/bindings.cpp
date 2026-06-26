@@ -117,7 +117,9 @@ PYBIND11_MODULE(deq, m) {
         .def_readonly("h_used", &IntegrationResult::h_used)
         .def_readonly("total_time", &IntegrationResult::total_time)
         .def_readonly("final_error", &IntegrationResult::final_error)
-        .def_readonly("history_level", &IntegrationResult::history_level);
+        .def_readonly("history_level", &IntegrationResult::history_level)
+        .def("print_info", &IntegrationResult::print_info);
+
 
     // Convergance Test Result
     py::class_<ConvergenceTestResult>(m, "ConvergenceTestResult")

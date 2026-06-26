@@ -53,6 +53,8 @@ IntegrationResult Solver::integrateFixedSteps(const IVPProblem& prob, double t_e
     auto endTime = std::chrono::steady_clock::now();
     result.total_time = std::chrono::duration<double>(endTime - startTime).count();
 
+    result.exact_func_given = true;
+
     return result;
 }
 
@@ -90,6 +92,8 @@ IntegrationResult Solver::integrateFixedSteps(const IVPProblem& prob, double t_e
 
     auto endTime = std::chrono::steady_clock::now();
     result.total_time = std::chrono::duration<double>(endTime - startTime).count();
+
+    result.exact_func_given = false;
 
     return result;
 }

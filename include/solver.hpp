@@ -2,8 +2,10 @@
 #include "problem.hpp"
 #include "Steppers/stepper.hpp"
 #include <vector>
+#include <iostream>
 #include "errorfunc/funcs.hpp"
 #include "errorfunc/metric.hpp"
+#include <string>
 
 namespace diffeq {
 
@@ -23,6 +25,23 @@ struct IntegrationResult {
     double total_time = 0.0;            // Execution time (seconds)
     double final_error = 0.0;            // Error at final time
     HistoryLevel history_level;         // How much of the history was stored
+    bool exact_func_given;
+
+    void print_info() const {
+        std::string history = (history_level == HistoryLevel::FULL) ? "Full History" : "Final Step Only";
+
+        std::cout << "Integration Result Information\n";
+        std::cout << "Number of Steps: " << n_steps << "\n";
+        std::cout << "Step Size: " << h_used << "\n";
+        std::cout << "Total Time: " << total_time << "\n";
+        if (exact_func_given) {
+            std::cout << "Final Error: " << final_error << "\n";
+        }
+        else {
+            std::cout << "No Exact Function Given\n";
+        }
+        std::cout << "History Kept: " << history << "\n";
+    }
 };
 
 struct ConvergenceTestResult {

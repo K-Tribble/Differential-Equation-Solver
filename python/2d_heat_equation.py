@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 """
-Code for plotting temperature diffusion L
+Code for plotting temperature diffusion
 on a 2D rectangular plate over time.
 Boundary conditions : No heat flow at the edges
 Initial Profile : Gaussian Initial Profile
@@ -12,7 +12,7 @@ Initial Profile : Gaussian Initial Profile
 alpha = 1
 
 # Define the rectangle grid
-N = 100
+N = 10
 dx, dy = 1 / N, 1 / N
 x = np.linspace(-1/2, 1/2, N)
 y = np.linspace(-1/2, 1/2, N)
@@ -36,9 +36,7 @@ def bc_func(x):
 
 t0 = 0
 
-bc_sides = deq.BCSide(deq.BCType.Neumann, bc_func)
-
-bc = deq.BoundaryConditions2D(bc_sides, bc_sides, bc_sides, bc_sides)
+bc = deq.BoundaryConditions2D(deq.BCType.Neumann, bc_func)
 
 rhs = deq.make_heat_rhs(alpha, N, N, dx, dy, bc)
 
@@ -54,6 +52,8 @@ t_end = 5
 nsteps = int(t_end / dt)
 
 result = solver.integrateFixedSteps(prob, t_end, dt, deq.history_level.final_only)
+
+result.print_info()
 
 # Extract final state
 u_final = np.array(result.Y)[-1]
