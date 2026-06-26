@@ -192,12 +192,14 @@ PYBIND11_MODULE(deq, m) {
     py::class_<pde::BoundaryConditions1D>(m, "BoundaryConditions1D")
         .def(py::init<>())
         .def(py::init<pde::BCSide, pde::BCSide>())
+        .def(py::init<pde::BCType, pde::BCFunc>())
         .def_readwrite("left", &pde::BoundaryConditions1D::left)
         .def_readwrite("right", &pde::BoundaryConditions1D::right);
 
     py::class_<pde::BoundaryConditions2D>(m, "BoundaryConditions2D")
         .def(py::init<>())
         .def(py::init<pde::BCSide, pde::BCSide, pde::BCSide, pde::BCSide>())
+        .def(py::init<pde::BCType, pde::BCFunc>())
         .def_readwrite("left", &pde::BoundaryConditions2D::left)
         .def_readwrite("right", &pde::BoundaryConditions2D::right)
         .def_readwrite("top", &pde::BoundaryConditions2D::top)
@@ -206,6 +208,7 @@ PYBIND11_MODULE(deq, m) {
     py::class_<pde::BoundaryConditions3D>(m, "BoundaryConditions3D")
         .def(py::init<>())
         .def(py::init<pde::BCSide, pde::BCSide, pde::BCSide, pde::BCSide, pde::BCSide, pde::BCSide>())
+        .def(py::init<pde::BCType, pde::BCFunc>())
         .def_readwrite("left", &pde::BoundaryConditions3D::left)
         .def_readwrite("right", &pde::BoundaryConditions3D::right)
         .def_readwrite("top", &pde::BoundaryConditions3D::top)

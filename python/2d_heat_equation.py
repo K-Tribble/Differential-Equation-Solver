@@ -31,8 +31,6 @@ u0_int = u0_full[1:-1, 1:-1]
 # Flatten for solver
 y0 = u0_int.flatten()
 
-dt = 0.00002603082
-
 def bc_func(x):
     return 0
 
@@ -46,14 +44,13 @@ rhs = deq.make_heat_rhs(alpha, N, N, dx, dy, bc)
 
 prob = deq.IVPProblem(rhs, y0, 0)
 
-rk3_stepper = deq.RK3Stepper()
-solver = deq.Solver(rk3_stepper)
+stepper = deq.RK3Stepper()
+solver = deq.Solver(stepper)
 
 # Stability limit is given y dt <= dx^2/(4 * alpha), this is under the limit
 dt = 1.5e-5
 
 t_end = 5
-dt = 1.5e-5
 nsteps = int(t_end / dt)
 
 result = solver.integrateFixedSteps(prob, t_end, dt, deq.history_level.final_only)
