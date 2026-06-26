@@ -59,6 +59,8 @@ int main() {
 
     auto result = solver.integrateFixedSteps(prob, t_end, dt, exact, L2);
 
+    result.print_info();
+
     std::cout << "Heat 1D example\n";
     std::cout << " n_interior = " << n_interior << " dx = " << dx << " dt = " << dt << "\n";
     std::cout << " Steps taken = " << result.n_steps << " total time = " << result.total_time << " s\n";
