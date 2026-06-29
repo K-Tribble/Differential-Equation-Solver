@@ -10,7 +10,7 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
 endif()
 
-# Complier optimizaer flags, can use -01, -02, -03 for more optimization but less stability. 
+# Complier optimizaer flags, can use -O1, -O2, -O3 for more optimization but less stability. 
 set(CMAKE_CXX_FLAGS_RELEASE "-O1 -march=native -DNDEBUG")
 set(CMAKE_C_FLAGS_RELEASE "-O1 -march=native -DNDEBUG")
 
