@@ -19,7 +19,7 @@ int main() {
 
     Vec y0 = {1.0, 0.0};
     double t0 = 0.0;
-    double t_end = 0.0;
+    double t_end = 1;
     double h = 0.01;
 
     IVPProblem prob(f, y0, t0);

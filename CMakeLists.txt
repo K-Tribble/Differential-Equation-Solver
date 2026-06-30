@@ -45,8 +45,15 @@ add_executable(1d_heat_example
     src/Steppers/rk4_stepper.cpp
 )
 
+add_executable(2nd_order_example
+    examples/2nd_order.cpp
+    src/solver.cpp
+    src/Steppers/rk4_stepper.cpp
+)
+
 target_include_directories(diffeq_demo PRIVATE include)
 target_include_directories(1d_heat_example PRIVATE include)
+target_include_directories(2nd_order_example PRIVATE include)
 
 pybind11_add_module(deq
     src/bindings.cpp
