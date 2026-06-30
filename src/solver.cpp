@@ -14,6 +14,7 @@ IntegrationResult Solver::integrateFixedSteps(const IVPProblem& prob, double t_e
     IntegrationResult result;
     result.h_used = h;
     result.error_func_name = metric.name;
+    result.history_level = history;
 
     double t = prob.t0;
     Vec y = prob.y0;
@@ -64,6 +65,7 @@ IntegrationResult Solver::integrateFixedSteps(const IVPProblem& prob, double t_e
     IntegrationResult result;
     result.h_used = h;
     result.error_func_name = "None";
+    result.history_level = history;
 
     double t = prob.t0;
     Vec y = prob.y0;
