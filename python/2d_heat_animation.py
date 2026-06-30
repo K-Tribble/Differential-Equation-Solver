@@ -144,5 +144,5 @@ anim = FuncAnimation(
     blit=True,
 )
 
-anim.save('Graphs/heat_diffusion.gif', writer='pillow', fps=25)
+anim.save('Plots/Animations/heat_diffusion.gif', writer='pillow', fps=25)
 plt.show()
