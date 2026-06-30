@@ -197,7 +197,7 @@ void Solver::printConvergenceTest(const ConvergenceTestResult& result) const {
     }
 }
 
-void Solver::convergenceTestDemoRun( const IVPProblem& prob, double t_end, const std::function<Vec(double)>& exactSolution, int minPow, int maxPow, const errorfunc::ErrorMetric& metric) const {
+void Solver::convergenceTestDemoRun(const IVPProblem& prob, double t_end, const std::function<Vec(double)>& exactSolution, int minPow, int maxPow, const errorfunc::ErrorMetric& metric) const {
     auto result = convergenceTest(prob, t_end, exactSolution, minPow, maxPow, metric);
     printConvergenceTest(result);
 }
@@ -220,4 +220,20 @@ std::vector<double> Solver::GetErrors(const std::vector<Vec>& Y_num, const std::
     for (size_t i = 0; i < Y_num.size(); ++i)
         errs.push_back(metric.func(Y_num[i], Y_exact[i]));
     return errs;
+}
+
+void IntegrationResult::print_info() const  {
+        std::string history = (history_level == HistoryLevel::FULL) ? "Full History" : "Final Step Only";
+
+        std::cout << "Integration Result Information\n";
+        std::cout << "Number of Steps: " << n_steps << "\n";
+        std::cout << "Step Size: " << h_used << "\n";
+        std::cout << "Total Time: " << total_time << "\n";
+        if (exact_func_given) {
+            std::cout << "Final Error: " << final_error << "\n";
+        }
+        else {
+            std::cout << "No Exact Function Given\n";
+        }
+        std::cout << "History Kept: " << history << "\n";
 }

@@ -27,21 +27,7 @@ struct IntegrationResult {
     HistoryLevel history_level;         // How much of the history was stored
     bool exact_func_given;              // Was an exact function given
 
-    void print_info() const {
-        std::string history = (history_level == HistoryLevel::FULL) ? "Full History" : "Final Step Only";
-
-        std::cout << "Integration Result Information\n";
-        std::cout << "Number of Steps: " << n_steps << "\n";
-        std::cout << "Step Size: " << h_used << "\n";
-        std::cout << "Total Time: " << total_time << "\n";
-        if (exact_func_given) {
-            std::cout << "Final Error: " << final_error << "\n";
-        }
-        else {
-            std::cout << "No Exact Function Given\n";
-        }
-        std::cout << "History Kept: " << history << "\n";
-    }
+    void print_info() const;
 };
 
 struct ConvergenceTestResult {
