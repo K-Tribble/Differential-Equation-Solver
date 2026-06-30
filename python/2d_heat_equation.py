@@ -6,7 +6,7 @@ from matplotlib.ticker import FormatStrFormatter
 """
 Code for plotting temperature diffusion
 on a 2D rectangular plate over time.
-Boundary conditions : Constant 293K temperature at the edges
+Boundary conditions : Zero heat flow at the edges
 Initial Profile : Gaussian Initial Profile
 """
 
@@ -22,7 +22,7 @@ X, Y = np.meshgrid(x, y)
 
 # Gaussian Initial Profile 
 sigma = 0.1
-u0_full = 273 - 20*np.exp(-(X**2 + Y**2)/sigma**2)
+u0_full = 273 - 20 * np.exp(-(X**2 + Y**2) / sigma**2)
 
 print(f"Initial Mean (full grid) = {np.mean(u0_full)}")
 
@@ -43,7 +43,7 @@ rhs = deq.make_heat_rhs(alpha, N, N, dx, dy, bc)
 
 prob = deq.IVPProblem(rhs, y0, 0)
 
-stepper = deq.RK5Stepper()
+stepper = deq.RK3Stepper()
 solver = deq.Solver(stepper)
 
 # Stability limit is given y dt <= dx^2/(4 * alpha), this is under the limit

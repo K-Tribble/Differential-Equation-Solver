@@ -25,7 +25,7 @@ struct IntegrationResult {
     double total_time = 0.0;            // Execution time (seconds)
     double final_error = 0.0;            // Error at final time
     HistoryLevel history_level;         // How much of the history was stored
-    bool exact_func_given;
+    bool exact_func_given;              // Was an exact function given
 
     void print_info() const {
         std::string history = (history_level == HistoryLevel::FULL) ? "Full History" : "Final Step Only";
