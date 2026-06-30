@@ -8,7 +8,7 @@ namespace diffeq {
     using RHS = std::function<Vec(double t, const Vec& y)>;
 
     namespace pde {
-        // Simple boundary condition types used by the helpers
+        // Simple boundary condition types
         enum class BCType { Dirichlet, Neumann, Periodic };
 
         // Boundary value / flux signature: value at a boundary as a function of time

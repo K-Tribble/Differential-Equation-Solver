@@ -11,8 +11,8 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Complier optimizaer flags, can use -O1, -O2, -O3 for more optimization but less stability. 
-set(CMAKE_CXX_FLAGS_RELEASE "-O1 -march=native -DNDEBUG")
-set(CMAKE_C_FLAGS_RELEASE "-O1 -march=native -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -DNDEBUG")
+set(CMAKE_C_FLAGS_RELEASE "-O3 -march=native -DNDEBUG")
 
 set(PYTHON_VENV_PATH "${CMAKE_SOURCE_DIR}/.venv")
 set(Python3_ROOT_DIR "${PYTHON_VENV_PATH}")

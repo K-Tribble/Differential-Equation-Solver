@@ -6,14 +6,14 @@ from matplotlib.ticker import FormatStrFormatter
 """
 Code for plotting temperature diffusion
 on a 2D rectangular plate over time.
-Boundary conditions : No heat flow at the edges
+Boundary conditions : Constant 293K temperature at the edges
 Initial Profile : Gaussian Initial Profile
 """
 
-alpha = 1
+alpha = 3.384783663047863e-05
 
 # Define the rectangle grid
-N = 200
+N = 100
 dx, dy = 1 / N, 1 / N
 x = np.linspace(-1/2, 1/2, N)
 y = np.linspace(-1/2, 1/2, N)
@@ -21,10 +21,10 @@ y = np.linspace(-1/2, 1/2, N)
 X, Y = np.meshgrid(x, y)
 
 # Gaussian Initial Profile 
-sigma = 0.25
-u0_full = np.exp(-(X**2 + Y**2) / sigma**2)
+sigma = 0.1
+u0_full = 273 - 20*np.exp(-(X**2 + Y**2)/sigma**2)
 
-print("Initial Mean (full grid) =", np.mean(u0_full))
+print(f"Initial Mean (full grid) = {np.mean(u0_full)}")
 
 # Extract interior only
 u0_int = u0_full[1:-1, 1:-1]
@@ -53,10 +53,10 @@ def stability_limit2d(dx, alpha):
 
 stab_lim = stability_limit2d(dx, alpha)
 print(stab_lim)
-dt = 0.9 * stab_lim
+dt = 0.4 * stab_lim
 print(dt)
 
-t_end = 1
+t_end = 0.1
 nsteps = int(t_end / dt)
 
 result = solver.integrateFixedSteps(prob, t_end, dt, deq.history_level.final_only)

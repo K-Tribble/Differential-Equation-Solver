@@ -61,10 +61,5 @@ int main() {
 
     result.print_info();
 
-    std::cout << "Heat 1D example\n";
-    std::cout << " n_interior = " << n_interior << " dx = " << dx << " dt = " << dt << "\n";
-    std::cout << " Steps taken = " << result.n_steps << " total time = " << result.total_time << " s\n";
-    std::cout << " Final error (" << result.error_func_name << ") = " << result.final_error << "\n";
-
     return 0;
 }
